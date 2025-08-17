@@ -1,15 +1,27 @@
 'use client'
 import { Trello } from "lucide-react";
 import { Button } from "./ui/button";
-import { SignInButton, SignUpButton, useUser } from "@clerk/nextjs";
+import { SignInButton, SignUpButton, UserButton, useUser } from "@clerk/nextjs";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 export function Navbar() {
-    console.log(useUser())
-    console.log(useUser().user?.emailAddresses)
-    console.log(useUser().user?.emailAddresses[0].emailAddress)
-    let isUserSignedIn = useUser().isSignedIn
-    let doesUsernameExist = true
-    // useUser hook from clerk returns all of the info \
-    // we need about a certain user
+    const {isSignedIn, user} = useUser()
+    const pathname = usePathname()
+    const isDashboardPage = pathname === '/dashboard'
+
+    if(isDashboardPage) {
+            return <div className="flex items-center justify-between p-2 sm: p-4 backdrop-blur-sm border">
+        <div className="flex space-x-2">
+            <Trello />
+            <span>
+                trello clone
+            </span>
+        </div>
+        <UserButton />
+    </div>
+
+    }
+
     return <div className="flex items-center justify-between p-2 sm: p-4 backdrop-blur-sm border">
         <div className="flex space-x-2">
             <Trello />
@@ -18,9 +30,15 @@ export function Navbar() {
             </span>
         </div>
 
-        {isUserSignedIn 
+        {isSignedIn 
         ? (
-            <div>Welcome, {useUser()?.user?.username ?? useUser().user?.emailAddresses[0].emailAddress}</div>
+            <div>
+                <div>Welcome, {user.username ?? user?.emailAddresses[0].emailAddress}</div>
+                <Link href='/dashboard'>
+                
+                <Button>go to dashboard</Button>
+                </Link>
+            </div>
         )
         : (
             <div className="text-xs sm:text-sm flex gap-1">
