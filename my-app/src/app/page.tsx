@@ -3,7 +3,7 @@ import Image from "next/image";
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-500 via-white to-purple-500">
+    <div className="min-h-screen bg-gradient-to-br from-blue-500 via-white to-purple-50">
       <Navbar />
     </div>
   );
